@@ -29,15 +29,15 @@ public class RobotContainer {
   private final Shooter shooter = new Shooter();
   
   // Replace with CommandPS4Controller or CommandJoystick if needed
-      private final XboxController controller = new XboxController(1);
+  private final XboxController controller = new XboxController(0);
+
+  private final CommandXboxController driverController = new CommandXboxController(OperatorConstants.kDriverControllerPort);
 
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
      configureBindings();
-
-    
   }
 
   /**
@@ -53,17 +53,16 @@ public class RobotContainer {
     final JoystickButton ButtonA = new JoystickButton(controller, Button.kA.value);
     final JoystickButton ButtonB = new JoystickButton(controller, Button.kB.value);
 
-    
-    
     // Schedule `ExampleCommand` when `exampleCondition` changes to `true`
-    //new Trigger(shooter).onTrue(new moveShooter(shooter));
+    // new Trigger(shooter::exampleCondition).onTrue(new Shoot(shooter));
 
-        ButtonA.whileFalse(new Shoot(shooter));
-        ButtonB.whileTrue(new stopShooter(shooter));
+    ButtonA.onTrue(new Shoot(shooter));
+
+    ButtonB.onTrue(new stopShooter(shooter));
 
       // Schedule `exampleMethodCommand` when the Xbox controller's B button is pressed,
     // cancelling on release.
-   // m_driverController.b().whileTrue(shooter.moveShooter());
+    // driverController.b().whileTrue(new Shoot(shooter));
   }
 
   /**
